@@ -1,23 +1,28 @@
-import logo from './logo.svg';
+import React,{useState,useEffect} from "react";
 import './App.css';
 
 function App() {
+  const url='https://jsonplaceholder.typicode.com/albums'
+  const [albums,setAlbum] = useState()
+  const  fetchApi = async () => {
+    const response = await fetch(url)
+    const responseJson = await response.json()
+    setAlbum(responseJson)
+  }
+  useEffect(()=>{
+    fetchApi()
+  },[])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h3>Api Albums</h3>
+      <ul className="ul-albums">
+        {!albums ? 'Cargando..':
+        albums.map((album,index) => {
+          return <li className="title">{album.title}</li>
+        })}
+      </ul>
+
     </div>
   );
 }
